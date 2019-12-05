@@ -5,6 +5,9 @@ const showmorebtn = document.getElementById("showmorebtn");
 let index = 0;
 
 function displaySearch(cityname) {
+    localStorage.setItem('city',JSON.stringify(cityname));
+    localStorage.setItem('requestNumber', 1);
+
     getData(cityname)
     .then(dataArr => {
         if(dataArr == "Unknown location") {
@@ -17,10 +20,10 @@ function displaySearch(cityname) {
         }
         else {
             console.log(dataArr);
-            sessionStorage.setItem('rooms', JSON.stringify(dataArr));
-            console.log(JSON.parse(sessionStorage.getItem('rooms')));
+            // localStorage.setItem('rooms', JSON.stringify(dataArr));
+            // console.log(JSON.parse(localStorage.getItem('rooms')));
             
-            displayRow(index,5,JSON.parse(sessionStorage.getItem('rooms')));
+            displayRow(dataArr);
             document.getElementById("showmorebtn").style.display = "block";
             // for( let elem of dataarr) {
             //     displayElem(elem);
@@ -29,8 +32,9 @@ function displaySearch(cityname) {
     });
 }
 
-async function getData(cityname) {
-    let url = `https://cors-anywhere.herokuapp.com/https://api.nestoria.co.uk/api?encoding=json&pretty=1&action=search_listings&country=uk&listing_type=rent&place_name=${cityname.toLowerCase()}`;
+async function getData(cityname, pageNumber) {
+    if(pageNumber === undefined) pageNumber = 1;
+    let url = `https://cors-anywhere.herokuapp.com/https://api.nestoria.co.uk/api?encoding=json&pretty=1&action=search_listings&country=uk&listing_type=rent&place_name=${cityname.toLowerCase()}&page=${pageNumber}&number_of_results=5`;
     console.log(url);
     let response = await fetch(url);
     let neededForm = await response.json();
@@ -47,21 +51,6 @@ function displayElem(elem) {
         image = document.createElement('img'),
         info = document.createElement('div'),
         wrap = document.getElementById('wrap');
-
-    function makeFavorBtn() {
-        let favorite_button_box = document.createElement('div'),
-            favorite_button = document.createElement('div'),
-            favorite_button_animation = document.createElement('span');
-        
-        favorite_button_box.className = 'flexbox';
-        favorite_button.className = 'fav-btn';
-        favorite_button_animation.className = 'favme dashicons dashicons-heart';
-
-        favorite_button.appendChild(favorite_button_animation);
-        favorite_button_box.appendChild(favorite_button);
-
-        return favorite_button_box;
-    }
 
     
 
@@ -90,12 +79,15 @@ function displayElem(elem) {
     wrap.appendChild(item);
 }
 
-function displayRow(startIndex, num, array) {
-    for (let i=0; i<num; i++) {
-        displayElem(array[i+startIndex]);
+function displayRow(array) {
+    for (let i=0; i<5; i++) {
+        displayElem(array[i]);
     }
-    index+=num;
+    localStorage.setItem('requestNumber', JSON.parse(localStorage.getItem('requestNumber'))+1);
 }
 
 srchbtn.addEventListener('click', () => displaySearch(document.getElementsByName('textbox')[0].value));
-showmorebtn.addEventListener('click', () => displayRow(index,5,JSON.parse(sessionStorage.getItem('rooms'))));
+showmorebtn.addEventListener('click', () => {
+    getData( JSON.parse( localStorage.getItem('city') ), JSON.parse( localStorage.getItem('requestNumber')+1))
+    .then(dataArr => displayRow(dataArr)); 
+});
