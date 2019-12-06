@@ -43,6 +43,7 @@
 body {
     margin: 0 auto;
     background-color: #f5f5f5;
+    font-family: 'Glyphicons Halflings';
 }
 .brand__container {
     height:40px;
@@ -103,4 +104,4 @@ body {
     max-width: 185px;
     width: 165px;
     background-color:#f5faff;
-} 
+}

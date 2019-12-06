@@ -50,7 +50,8 @@ function displayElem(elem) {
         content_keywords = document.createElement('div'),
         image = document.createElement('img'),
         info = document.createElement('div'),
-        wrap = document.getElementById('wrap');
+        wrap = document.getElementById('wrap'),
+        info_checkbox = document.createElement('input');
 
     
 
@@ -71,7 +72,9 @@ function displayElem(elem) {
     content.appendChild(content_title);
     content.appendChild(content_keywords);
 
-    info.textContent = "asfsdfdsf";
+    info_checkbox.type = 'checkbox';
+    info.appendChild(info_checkbox);
+    info.textContent = "\u2606";
 
     item.appendChild(image);
     item.appendChild(content);
