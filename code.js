@@ -51,7 +51,8 @@ function displayElem(elem) {
         image = document.createElement('img'),
         info = document.createElement('div'),
         wrap = document.getElementById('wrap'),
-        info_checkbox = document.createElement('input');
+        emptystar_image = document.getElementById('emptystar'),
+        info_buttonbox = document.createElement('button');
 
     
 
@@ -72,9 +73,10 @@ function displayElem(elem) {
     content.appendChild(content_title);
     content.appendChild(content_keywords);
 
-    info_checkbox.type = 'checkbox';
-    info.appendChild(info_checkbox);
-    info.textContent = "\u2606";
+    // info_buttonbox.textContent = "\u2606";
+    
+    // info.appendChild(info_buttonbox);
+    info.appendChild(emptystar_image);
 
     item.appendChild(image);
     item.appendChild(content);
