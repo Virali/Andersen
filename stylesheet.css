@@ -1,0 +1,122 @@
+.header_fixed {
+    background-color:#0073d9;
+    height:60px;
+    text-align:center;
+    width: 100%;
+    margin: auto;
+    padding-top: 24px;
+}
+.brand_container {
+    height: 40px;
+    width: 130px;
+    color: white;
+    margin: auto;
+}
+.search_container {
+    width: 95%;
+    height: 49px;
+}
+.search_controls {
+    margin-left: 25%;
+    cursor: text;
+    width: 45%;
+    height: 39px;
+    background-color: #f5f5f5;
+    border-radius: 3px;
+    border: 2px solid #ccc;
+    float: left;
+    font-size: 21px;
+}
+.search-mask_label {
+    padding: 8px 0;
+    color:#0073d9;
+    width: 75px;
+    font-size: 15px;
+}
+.showmore-mask_label {
+    padding: 12px 4px;
+    color:#0073d9;
+    font-size: 15px;
+    display: none;
+    margin: 0 auto;
+}
+body {
+    margin: 0 auto;
+    background-color: #f5f5f5;
+    font-family: 'Glyphicons Halflings';
+}
+.brand__container {
+    height:40px;
+    margin-top:5px;
+    width:130px
+}
+.wrap {
+    width: 1050px;/*фиксируем ширину обертки*/
+    margin: 0 auto;/*центрируем ее*/
+    background: #f5f5f5;
+}
+.list_item_new {
+    display: flex;
+    flex-direction: row;
+    margin: 14px 0;
+    font-size: 110%;
+    overflow: hidden;
+    background-color: white;
+    border: 2px black;
+    box-shadow: #545454;
+    box-shadow: 5px 10px #b9b6b6;
+}
+.item_cover {
+    max-width: 265px;
+    width: 100%;
+    display: inherit;
+    overflow: hidden;
+    min-height: 242px;
+    left: auto;
+    margin: 0;
+    float:left;
+}
+.item_content {
+    display: inline-table !important;
+    width: calc(100% - 400px);
+    padding: 15px;
+    overflow: hidden;
+    height: 212px;
+    float: left;
+}
+.content_title {
+    width: 100%;
+    line-height: 22px;
+    color: #0073d9;
+    font-size: 22px;
+    font-weight: 750;
+}
+.content_keywords {
+    max-width: 70%;
+    margin-top: 10px;
+    color:#545454;
+    overflow: hidden;
+}
+.item_info {
+    display: table-cell;
+    float: left;
+    position: relative;
+    max-width: 185px;
+    width: 165px;
+    background-color:#f5faff;
+}
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: "Glyphicons Halflings";
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.emptystar {
+    content: url(https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png);
+    height: 44px;
+}
