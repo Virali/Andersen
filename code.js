@@ -3,7 +3,7 @@
 const srchbtn = document.getElementById("srchbtn");
 const showmorebtn = document.getElementById("showmorebtn");
 let index = 0;
-localStorage.setItem('favoriteData', JSON.stringify([]));
+localStorage.setItem('favoriteData', JSON.stringify( [] ));
 
 function displaySearch(cityname) {
     localStorage.setItem('city',JSON.stringify(cityname));
@@ -36,25 +36,23 @@ function displaySearch(cityname) {
 async function getData(cityname, pageNumber) {
     if(!pageNumber) pageNumber = 1;
     let url = `https://cors-anywhere.herokuapp.com/https://api.nestoria.co.uk/api?encoding=json&pretty=1&action=search_listings&country=uk&listing_type=rent&place_name=${cityname.toLowerCase()}&page=${pageNumber}&number_of_results=5`;
-    console.log(url);
     let response = await fetch(url);
     let neededForm = await response.json();
     console.log(neededForm);
 
-    return neededForm.response.listings.length == 0 ? "Unknown location" : neededForm.response.listings;
+    return neededForm.response.listings == undefined ? "Unknown location" : neededForm.response.listings;
 }
 
 function displayElem(elem) {
     const item = document.createElement('div');
     const content = document.createElement('div');
-    const content_title = document.createElement('div');
+    const content_title = document.createElement('a');
     const content_keywords = document.createElement('div');
     const image = document.createElement('img');
     const info = document.createElement('div');
     const wrap = document.getElementById('wrap');
     const emptystar_image = document.createElement('image');
     const info_button_box = document.createElement('a');
-
 
     item.className = 'list_item_new';
     image.className = 'item_cover';
@@ -76,8 +74,12 @@ function displayElem(elem) {
     //emptystar_image.content = url("https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png");
     //emptystar_image.style.height = "44px";
     info_button_box.appendChild(emptystar_image);
-    info_button_box.textContent = "Add To Favorites";
-    info_button_box.onclick = `addToFavorite(${elem});`;
+    info_button_box.textContent = (JSON.parse( localStorage.getItem('favoriteData')).find( (present) =>  present.lister_url == elem.lister_url) != undefined ) ? "Your Favorite!" : "Add To Favorites";
+    info_button_box.addEventListener( 'click',()=> {
+        addOrRemove(elem);
+        if(elem.added) info_button_box.textContent = "Your Favorite!";
+        else info_button_box.textContent = "Add To Favorites";
+    });
 
     info.appendChild(info_button_box);
     info.appendChild(emptystar_image);
@@ -86,6 +88,7 @@ function displayElem(elem) {
     item.appendChild(content);
     item.appendChild(info);
     wrap.appendChild(item);
+    content_title.addEventListener('click', () => openModalAdvert(item));
 }
 
 function displayRow(array) {
@@ -95,15 +98,40 @@ function displayRow(array) {
     localStorage.setItem('requestNumber', JSON.parse(localStorage.getItem('requestNumber'))+1);
 }
 
-function addToFavorite(objElem) {
-    let arrayInStorage =JSON.parse(localStorage.getItem('favoriteData'));
+function addOrRemove(elem) {
+    const arrayInStorage =JSON.parse(localStorage.getItem('favoriteData'));
+    let updatedArray;
 
-    arrayInStorage.push(objElem);
-    console.log('pushed');
+    if(elem.added != true) {
+        elem.added = true;
+        arrayInStorage.push(elem);
+        updatedArray = arrayInStorage;
+    }
+    else {
+        updatedArray = arrayInStorage.filter((present) => present.lister_url !== elem.lister_url);
+        elem.added = false;
+    }
+
+    localStorage.setItem('favoriteData', JSON.stringify(updatedArray));
+    console.log(JSON.parse(localStorage.getItem('favoriteData')));
 }
 
+function openModalAdvert(advert) {
+    const box = document.getElementById("modalAdvert");
+    const modalContent = document.getElementById("modal_content");
 
-srchbtn.addEventListener('click', () => displaySearch(document.getElementsByName('textbox')[0].value));
+    modalContent.innerHTML = "";
+    // box.innerHTML = "<div class='modal-content'><span class='close'>&times;</span><p>Some text in the Modal..</p></div>";
+    modalContent.appendChild(advert);
+
+    box.style.display = "block";
+}
+
+srchbtn.addEventListener('click', () => {
+    document.getElementById('wrap').innerHTML = '';
+    displaySearch(document.getElementsByName('textbox')[0].value);
+});
+
 showmorebtn.addEventListener('click', () => {
     getData( JSON.parse( localStorage.getItem('city') ), JSON.parse( localStorage.getItem('requestNumber')+1))
     .then(dataArr => displayRow(dataArr)); 
