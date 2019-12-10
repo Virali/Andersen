@@ -2,8 +2,10 @@
 
 const srchbtn = document.getElementById("srchbtn");
 const showmorebtn = document.getElementById("showmorebtn");
+const favorBoxButton = document.getElementsByClassName("favorite_box")[0];
 let index = 0;
 localStorage.setItem('favoriteData', JSON.stringify( [] ));
+const favoriteData = JSON.parse(localStorage.getItem('favoriteData'));
 
 function displaySearch(cityname) {
     localStorage.setItem('city',JSON.stringify(cityname));
@@ -117,20 +119,61 @@ function addOrRemove(elem) {
 }
 
 function openModalAdvert(advert) {
-    const box = document.getElementById("modalAdvert");
+    const box = document.getElementById("modalBox");
     const modalContent = document.getElementById("modal_content");
 
-    modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
+    //modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
     
 
-    document.getElementById('closer').onclick = () => box.style.display = 'none';
+    document.getElementById('closer').onclick = () => {
+        modalContent.removeChild(advertclone);
+        box.style.display = 'none';
+    };
     window.onclick = function(event) {
         if(event.target == box) {
+            modalContent.removeChild(advertclone);
             box.style.display = 'none';
         }
     };
 
-    modalContent.appendChild(advert);
+    console.log(typeof(advert));
+    advertclone = advert.cloneNode([true]);
+    modalContent.appendChild(advertclone);
+
+    box.style.display = "block";
+}
+
+function openModalFavorite(elem) {
+    const box = document.getElementById("modalBox");
+    const modalContent = document.getElementById("modal_content");
+    const item = document.createElement('div');
+    const image = document.createElement('img');
+    const title = document.createElement('a');
+
+    item.className = 'list_item_new';
+    image.className = 'item_cover';
+    image.src = elem.img_url;
+    title.className = 'content_title';
+    title.textContent = elem.title;
+
+    item.appendChild(image);
+    item.appendChild(title);
+    modalContent.appendChild(item);
+
+    document.getElementById('closer').onclick = () => {
+        while(modalContent.firstChild) {
+            modalContent.removeChild(modalContent.firstChild);
+        }
+        box.style.display = 'none';
+    };
+    window.onclick = function(event) {
+        if(event.target == box) {
+            while(modalContent.firstChild) {
+                modalContent.removeChild(modalContent.firstChild);
+            }
+            box.style.display = 'none';
+        }
+    };
 
     box.style.display = "block";
 }
@@ -143,4 +186,11 @@ srchbtn.addEventListener('click', () => {
 showmorebtn.addEventListener('click', () => {
     getData( JSON.parse( localStorage.getItem('city') ), JSON.parse( localStorage.getItem('requestNumber')+1))
     .then(dataArr => displayRow(dataArr)); 
+});
+
+favorBoxButton.addEventListener('click', () => {
+    let arrayOfElements = JSON.parse(localStorage.getItem('favoriteData'));
+    for(let i = 0; i < arrayOfElements.length; i++) {
+        openModalFavorite(arrayOfElements[i]);
+    }
 });

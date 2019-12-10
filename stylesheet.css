@@ -13,6 +13,7 @@
     margin: auto;
 }
 .search_container {
+    display: flex;
     width: 95%;
     height: 49px;
 }
@@ -20,7 +21,7 @@
     margin-left: 25%;
     cursor: text;
     width: 45%;
-    height: 39px;
+    height: 42px;
     background-color: #f5f5f5;
     border-radius: 3px;
     border: 2px solid #ccc;
@@ -28,6 +29,7 @@
     font-size: 21px;
 }
 .search-mask_label {
+    height: 42px;
     padding: 8px 0;
     color:#0073d9;
     width: 75px;
@@ -48,7 +50,7 @@ body {
 .brand__container {
     height:40px;
     margin-top:5px;
-    width:130px
+    width:130px;
 }
 .wrap {
     width: 1050px;/*фиксируем ширину обертки*/
@@ -160,6 +162,5 @@ body {
     cursor: pointer;
 }
 .favorite_box {
-    content: url(https://www.clipartwiki.com/clipimg/detail/64-646573_free-stock-photo-yellow-star-transparent-background.png);
-    height: 42px;
+    margin-left: 150px;
 }
