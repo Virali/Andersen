@@ -123,7 +123,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 .emptystar {
-    content: url(https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png);
+    display: block;
     height: 44px;
 }
 .modal {
@@ -163,4 +163,9 @@ body {
 }
 .favorite_box {
     margin-left: 150px;
+}
+.info_button_box {
+    width:165px; /* or whatever width you want. */
+    max-width:170px; /* or whatever width you want. */
+    display: inline-block;
 }

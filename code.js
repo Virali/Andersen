@@ -50,34 +50,34 @@ function displayElem(elem) {
     const content = document.createElement('div');
     const content_title = document.createElement('a');
     const content_keywords = document.createElement('div');
-    const image = document.createElement('img');
+    const roomImage = document.createElement('img');
     const info = document.createElement('div');
     const wrap = document.getElementById('wrap');
-    const emptystar_image = document.createElement('image');
-    const info_button_box = document.createElement('a');
+    const emptystar_image = document.createElement('img');
+    const info_button_box = document.createElement('div');
 
     item.className = 'list_item_new';
-    image.className = 'item_cover';
+    roomImage.className = 'item_cover';
     content.className = 'item_content';
     info.className = 'item_info';
     content_title.className = 'content_title';
     content_keywords.className = "content_keywords";
+    info_button_box.className = "info_button_box";
     
 
     content_title.textContent = elem.title;
     content_keywords.textContent = `${elem.size} sq.ft · ${elem.bedroom_number} Bedrooms · ${elem.bathroom_number} Baths · ` + elem.keywords.replace(/,/g, " · ");
 
-    image.src = elem.img_url;
+    roomImage.src = elem.img_url;
 
     content.appendChild(content_title);
     content.appendChild(content_keywords);
 
     emptystar_image.className = 'emptystar';
-    //emptystar_image.content = url("https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png");
-    //emptystar_image.style.height = "44px";
+    emptystar_image.src = "https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png";
     info_button_box.appendChild(emptystar_image);
     info_button_box.textContent = (JSON.parse( localStorage.getItem('favoriteData')).find( (present) =>  present.lister_url == elem.lister_url) != undefined ) ? "Your Favorite!" : "Add To Favorites";
-    info_button_box.addEventListener( 'click',()=> {
+    info_button_box.addEventListener( 'click', () => {
         addOrRemove(elem);
         if(elem.added) info_button_box.textContent = "Your Favorite!";
         else info_button_box.textContent = "Add To Favorites";
@@ -86,7 +86,7 @@ function displayElem(elem) {
     info.appendChild(info_button_box);
     info.appendChild(emptystar_image);
 
-    item.appendChild(image);
+    item.appendChild(roomImage);
     item.appendChild(content);
     item.appendChild(info);
     wrap.appendChild(item);
@@ -161,16 +161,12 @@ function openModalFavorite(elem) {
     modalContent.appendChild(item);
 
     document.getElementById('closer').onclick = () => {
-        while(modalContent.firstChild) {
-            modalContent.removeChild(modalContent.firstChild);
-        }
+        modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
         box.style.display = 'none';
     };
     window.onclick = function(event) {
         if(event.target == box) {
-            while(modalContent.firstChild) {
-                modalContent.removeChild(modalContent.firstChild);
-            }
+            modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
             box.style.display = 'none';
         }
     };
@@ -184,7 +180,7 @@ srchbtn.addEventListener('click', () => {
 });
 
 showmorebtn.addEventListener('click', () => {
-    getData( JSON.parse( localStorage.getItem('city') ), JSON.parse( localStorage.getItem('requestNumber')+1))
+    getData( JSON.parse( localStorage.getItem('city') ), JSON.parse( localStorage.getItem('requestNumber')) )
     .then(dataArr => displayRow(dataArr)); 
 });
 
