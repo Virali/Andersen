@@ -120,8 +120,16 @@ function openModalAdvert(advert) {
     const box = document.getElementById("modalAdvert");
     const modalContent = document.getElementById("modal_content");
 
-    modalContent.innerHTML = "";
-    // box.innerHTML = "<div class='modal-content'><span class='close'>&times;</span><p>Some text in the Modal..</p></div>";
+    modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
+    
+
+    document.getElementById('closer').onclick = () => box.style.display = 'none';
+    window.onclick = function(event) {
+        if(event.target == box) {
+            box.style.display = 'none';
+        }
+    };
+
     modalContent.appendChild(advert);
 
     box.style.display = "block";

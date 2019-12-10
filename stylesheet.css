@@ -97,7 +97,7 @@ body {
 }
 .content_keywords {
     max-width: 70%;
-    margin-top: 10px;
+    margin-top: 10px 0px;
     color:#545454;
     overflow: hidden;
 }
@@ -146,10 +146,6 @@ body {
     width: 80%; /* Could be more or less, depending on screen size */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
 }
-div.list_item_new {
-    margin: 0px;
-    box-shadow: none;
-}
 /* The Close Button */
 .close {
     color: #aaa;
@@ -162,4 +158,8 @@ div.list_item_new {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+.favorite_box {
+    content: url(https://www.clipartwiki.com/clipimg/detail/64-646573_free-stock-photo-yellow-star-transparent-background.png);
+    height: 42px;
 }
