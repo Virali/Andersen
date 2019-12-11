@@ -80,7 +80,7 @@ body {
 }
 .item_content {
     display: inline-table !important;
-    width: calc(100% - 400px);
+    width: calc(100% - 500px);
     padding: 15px;
     overflow: hidden;
     height: 212px;
@@ -107,8 +107,7 @@ body {
     display: table-cell;
     float: left;
     position: relative;
-    max-width: 185px;
-    width: 165px;
+    width: 205px;
     background-color:#f5faff;
 }
 .glyphicon {
@@ -142,7 +141,9 @@ body {
 }
 /* Modal Content/Box */
 .modal-content {
-    background-color: #fefefe;
+    background-color: lightblue;
+    padding: 10px;
+    padding-right: 0px;
     margin: 15% auto; /* 15% from the top and centered */
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
@@ -164,8 +165,24 @@ body {
 .favorite_box {
     margin-left: 150px;
 }
-.info_button_box {
-    width:165px; /* or whatever width you want. */
-    max-width:170px; /* or whatever width you want. */
+.favorite_button_box {
+    width:205px;
+    display: flex;
+}
+.star {
+    display: block;
+    height: 44px;
+}
+.favorite_text {
+    line-height: 44px;
+    text-align: center;
+    width: 150px;
     display: inline-block;
+}
+.modal_item_new {
+    display: flex;
+    flex-direction: row;
+    font-size: 110%;
+    overflow: hidden;
+    background-color: white;
 }

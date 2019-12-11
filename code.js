@@ -45,59 +45,205 @@ async function getData(cityname, pageNumber) {
     return neededForm.response.listings == undefined ? "Unknown location" : neededForm.response.listings;
 }
 
-function displayElem(elem) {
-    const item = document.createElement('div');
-    const content = document.createElement('div');
-    const content_title = document.createElement('a');
-    const content_keywords = document.createElement('div');
-    const roomImage = document.createElement('img');
-    const info = document.createElement('div');
-    const wrap = document.getElementById('wrap');
-    const emptystar_image = document.createElement('img');
-    const info_button_box = document.createElement('div');
-
-    item.className = 'list_item_new';
-    roomImage.className = 'item_cover';
-    content.className = 'item_content';
-    info.className = 'item_info';
-    content_title.className = 'content_title';
-    content_keywords.className = "content_keywords";
-    info_button_box.className = "info_button_box";
-    
-
-    content_title.textContent = elem.title;
-    content_keywords.textContent = `${elem.size} sq.ft · ${elem.bedroom_number} Bedrooms · ${elem.bathroom_number} Baths · ` + elem.keywords.replace(/,/g, " · ");
-
-    roomImage.src = elem.img_url;
-
-    content.appendChild(content_title);
-    content.appendChild(content_keywords);
-
-    emptystar_image.className = 'emptystar';
-    emptystar_image.src = "https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png";
-    info_button_box.appendChild(emptystar_image);
-    info_button_box.textContent = (JSON.parse( localStorage.getItem('favoriteData')).find( (present) =>  present.lister_url == elem.lister_url) != undefined ) ? "Your Favorite!" : "Add To Favorites";
-    info_button_box.addEventListener( 'click', () => {
-        addOrRemove(elem);
-        if(elem.added) info_button_box.textContent = "Your Favorite!";
-        else info_button_box.textContent = "Add To Favorites";
-    });
-
-    info.appendChild(info_button_box);
-    info.appendChild(emptystar_image);
-
-    item.appendChild(roomImage);
-    item.appendChild(content);
-    item.appendChild(info);
-    wrap.appendChild(item);
-    content_title.addEventListener('click', () => openModalAdvert(item));
-}
-
 function displayRow(array) {
     for (let i=0; i<5; i++) {
         displayElem(array[i]);
     }
     localStorage.setItem('requestNumber', JSON.parse(localStorage.getItem('requestNumber'))+1);
+}
+
+function displayElem(elem) {
+    const item = document.createElement('div');
+    const content = document.createElement('div');
+    const contentTitle = document.createElement('a');
+    const contentKeywords = document.createElement('div');
+    const roomImage = document.createElement('img');
+    const info = document.createElement('div');
+    const wrap = document.getElementById('wrap');
+    const favoriteImage = document.createElement('img');
+    const favoriteButtonBox = document.createElement('div');
+    const favoriteButtonText = document.createElement('span');
+
+    item.className = 'list_item_new';
+    roomImage.className = 'item_cover';
+    content.className = 'item_content';
+    info.className = 'item_info';
+    contentTitle.className = 'content_title';
+    contentKeywords.className = "content_keywords";
+    favoriteButtonBox.className = "favorite_button_box";
+    favoriteImage.className = 'star';
+    favoriteButtonText.className = 'favorite_text';
+    
+
+    contentTitle.textContent = elem.title;
+    contentKeywords.textContent = `${elem.size} sq.ft · ${elem.bedroom_number} Bedrooms · ${elem.bathroom_number} Baths · ` + elem.keywords.replace(/,/g, " · ");
+
+    roomImage.src = elem.img_url;
+
+    content.appendChild(contentTitle);
+    content.appendChild(contentKeywords);
+
+    
+    if(JSON.parse( localStorage.getItem('favoriteData')).find( (present) =>  present.lister_url == elem.lister_url) != undefined ) {
+        favoriteButtonText.textContent = "Your Favorite!";
+        favoriteImage.src = "https://www.clipartwiki.com/clipimg/detail/64-646573_free-stock-photo-yellow-star-transparent-background.png";
+    } else {
+        favoriteButtonText.textContent = "Add To Favorites";
+        favoriteImage.src = "https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png";
+    }
+    favoriteButtonBox.appendChild(favoriteImage);
+    favoriteButtonBox.appendChild(favoriteButtonText);
+    favoriteButtonBox.addEventListener( 'click', () => {
+        addOrRemove(elem);
+        if(elem.added) {
+            favoriteImage.src = "https://www.clipartwiki.com/clipimg/detail/64-646573_free-stock-photo-yellow-star-transparent-background.png";
+            favoriteButtonText.textContent = "Your Favorite!";
+        }
+        else {
+            favoriteImage.src = "https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png";
+            favoriteButtonText.textContent = "Add To Favorites";
+        }
+    });
+
+    info.appendChild(favoriteButtonBox);
+    //info.appendChild(emptystar_image);
+
+    item.appendChild(roomImage);
+    item.appendChild(content);
+    item.appendChild(info);
+    wrap.appendChild(item);
+    contentTitle.addEventListener('click', () => openModalAdvert(elem, favoriteButtonBox));
+}
+
+function openModalAdvert(elem, favoriteButtonBox) {
+    const box = document.getElementById("modalBox");
+    const modalContent = document.getElementById("modal_content");
+    const item = document.createElement('div');
+    const content = document.createElement('div');
+    const contentTitle = document.createElement('a');
+    const contentKeywords = document.createElement('div');
+    const contentDecription = document.createElement('span');
+    const roomImage = document.createElement('img');
+    const info = document.createElement('div');
+    // const favoriteImage = document.createElement('img');
+    const favoriteButtonBoxModal = favoriteButtonBox;
+    // const favoriteButtonText = document.createElement('span');
+
+    item.className = 'modal_item_new';
+    content.className = 'item_content';
+    info.className = 'item_info';
+    contentTitle.className = 'content_title';
+    contentKeywords.className = "content_keywords";
+    // favoriteButtonBox.className = "favorite_button_box";
+    // favoriteImage.className = 'star';
+    // favoriteButtonText.className = 'favorite_text';
+    roomImage.className = 'item_cover';
+
+    roomImage.src = elem.img_url;
+
+    contentTitle.textContent = elem.title;
+    contentKeywords.textContent = `${elem.size} sq.ft · ${elem.bedroom_number} Bedrooms · ${elem.bathroom_number} Baths · ` + elem.keywords.replace(/,/g, " · ");
+    contentDecription.textContent = elem.summary;
+    content.appendChild(contentTitle);
+    content.appendChild(contentKeywords);
+    content.appendChild(document.createElement('br'));
+    content.appendChild(contentDecription);
+
+    // favoriteImage.src = "https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png";
+    // favoriteButtonText.textContent = (JSON.parse( localStorage.getItem('favoriteData')).find( (present) =>  present.lister_url == elem.lister_url) != undefined ) ? "Your Favorite!" : "Add To Favorites";
+    // favoriteButtonBox.appendChild(favoriteImage);
+    // favoriteButtonBox.appendChild(favoriteButtonText);
+    // favoriteButtonBox.addEventListener( 'click', () => {
+    //     addOrRemove(elem);
+    //     if(elem.added) {
+    //         favoriteImage.src = "https://www.clipartwiki.com/clipimg/detail/64-646573_free-stock-photo-yellow-star-transparent-background.png";
+    //         favoriteButtonText.textContent = "Your Favorite!";
+    //     }
+    //     else {
+    //         favoriteImage.src = "https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png";
+    //         favoriteButtonText.textContent = "Add To Favorites";
+    //     }
+    // });
+    let favoriteButtonBoxModalClone = favoriteButtonBoxModal.cloneNode([true]);
+    info.appendChild(favoriteButtonBoxModalClone);
+
+    document.getElementById('closer').onclick = () => {
+        modalContent.removeChild(item);
+        box.style.display = 'none';
+    };
+    window.onclick = function(event) {
+        if(event.target == box) {
+            modalContent.removeChild(item);
+            box.style.display = 'none';
+        }
+    };
+
+    item.appendChild(roomImage);
+    item.appendChild(content);
+    item.appendChild(info);
+    modalContent.appendChild(item);
+
+    box.style.display = "block";
+}
+
+function openModalFavorite(elem) {
+    const box = document.getElementById("modalBox");
+    const modalContent = document.getElementById("modal_content");
+    const item = document.createElement('div');
+    const content = document.createElement('div');
+    const contentTitle = document.createElement('a');
+    const contentKeywords = document.createElement('div');
+    const contentDecription = document.createElement('span');
+    const roomImage = document.createElement('img');
+    const info = document.createElement('div');
+    const priceFormatted = document.createElement('p');
+    const priceType = document.createElement('p');
+    const advertLink = document.createElement('a');
+
+
+    item.className = 'modal_item_new';
+    roomImage.className = 'item_cover';
+    content.className = 'item_content';
+    info.className = 'item_info';
+    contentTitle.className = 'content_title';
+    contentKeywords.className = "content_keywords";
+
+    roomImage.src = elem.img_url;
+
+    contentTitle.textContent = elem.title;
+    contentKeywords.textContent = `${elem.size} sq.ft · ${elem.bedroom_number} Bedrooms · ${elem.bathroom_number} Baths · ` + elem.keywords.replace(/,/g, " · ");
+    contentDecription.textContent = elem.summary;
+    content.appendChild(contentTitle);
+    content.appendChild(contentKeywords);
+    content.appendChild(document.createElement('br'));
+    content.appendChild(contentDecription);
+
+    priceFormatted.textContent = elem.price_formatted;
+    priceType.textContent = elem.price_type;
+    advertLink.href = elem.lister_url;
+    advertLink.textContent = "Link";
+    info.appendChild(priceFormatted);
+    info.appendChild(priceType);
+    info.appendChild(advertLink);
+
+    item.appendChild(roomImage);
+    item.appendChild(content);
+    item.appendChild(info);
+    modalContent.appendChild(item);
+    
+
+    document.getElementById('closer').onclick = () => {
+        modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
+        box.style.display = 'none';
+    };
+    window.onclick = function(event) {
+        if(event.target == box) {
+            modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
+            box.style.display = 'none';
+        }
+    };
+
+    box.style.display = "block";
 }
 
 function addOrRemove(elem) {
@@ -116,62 +262,6 @@ function addOrRemove(elem) {
 
     localStorage.setItem('favoriteData', JSON.stringify(updatedArray));
     console.log(JSON.parse(localStorage.getItem('favoriteData')));
-}
-
-function openModalAdvert(advert) {
-    const box = document.getElementById("modalBox");
-    const modalContent = document.getElementById("modal_content");
-
-    //modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
-    
-
-    document.getElementById('closer').onclick = () => {
-        modalContent.removeChild(advertclone);
-        box.style.display = 'none';
-    };
-    window.onclick = function(event) {
-        if(event.target == box) {
-            modalContent.removeChild(advertclone);
-            box.style.display = 'none';
-        }
-    };
-
-    console.log(typeof(advert));
-    advertclone = advert.cloneNode([true]);
-    modalContent.appendChild(advertclone);
-
-    box.style.display = "block";
-}
-
-function openModalFavorite(elem) {
-    const box = document.getElementById("modalBox");
-    const modalContent = document.getElementById("modal_content");
-    const item = document.createElement('div');
-    const image = document.createElement('img');
-    const title = document.createElement('a');
-
-    item.className = 'list_item_new';
-    image.className = 'item_cover';
-    image.src = elem.img_url;
-    title.className = 'content_title';
-    title.textContent = elem.title;
-
-    item.appendChild(image);
-    item.appendChild(title);
-    modalContent.appendChild(item);
-
-    document.getElementById('closer').onclick = () => {
-        modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
-        box.style.display = 'none';
-    };
-    window.onclick = function(event) {
-        if(event.target == box) {
-            modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
-            box.style.display = 'none';
-        }
-    };
-
-    box.style.display = "block";
 }
 
 srchbtn.addEventListener('click', () => {
