@@ -126,7 +126,6 @@ function openModalAdvert(elem, favoriteButtonBox) {
     const roomImage = document.createElement('img');
     const info = document.createElement('div');
     // const favoriteImage = document.createElement('img');
-    const favoriteButtonBoxModal = favoriteButtonBox;
     // const favoriteButtonText = document.createElement('span');
 
     item.className = 'modal_item_new';
@@ -164,17 +163,19 @@ function openModalAdvert(elem, favoriteButtonBox) {
     //         favoriteButtonText.textContent = "Add To Favorites";
     //     }
     // });
-    let favoriteButtonBoxModalClone = favoriteButtonBoxModal.cloneNode([true]);
-    info.appendChild(favoriteButtonBoxModalClone);
+    let originalInfo = favoriteButtonBox.parentNode;
+    info.appendChild(favoriteButtonBox);
 
     document.getElementById('closer').onclick = () => {
         modalContent.removeChild(item);
         box.style.display = 'none';
+        originalInfo.appendChild(favoriteButtonBox);
     };
     window.onclick = function(event) {
         if(event.target == box) {
             modalContent.removeChild(item);
             box.style.display = 'none';
+            originalInfo.appendChild(favoriteButtonBox);
         }
     };
 
@@ -200,7 +201,7 @@ function openModalFavorite(elem) {
     const priceType = document.createElement('p');
     const advertLink = document.createElement('a');
 
-
+    modalContent.className = "modal_content_favorite";
     item.className = 'modal_item_new';
     roomImage.className = 'item_cover';
     content.className = 'item_content';
