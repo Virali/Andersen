@@ -17,9 +17,11 @@ function displaySearch(cityname) {
             let content = document.createElement("P");
             let block = document.getElementById("wrap");
     
-            content.innerText = "Unknown location";
+            content.className = "unknown_request";
+
+            content.textContent = "Unknown location";
             block.appendChild(content);
-            block.innerText = "Unknown location";
+            document.getElementById("showmorebtn").style.display = 'none';
         }
         else {
             console.log(dataArr);
@@ -42,7 +44,7 @@ async function getData(cityname, pageNumber) {
     let neededForm = await response.json();
     console.log(neededForm);
 
-    return neededForm.response.listings == undefined ? "Unknown location" : neededForm.response.listings;
+    return neededForm.response.application_response_code != 100 ? "Unknown location" : neededForm.response.listings;
 }
 
 function displayRow(array) {
@@ -128,6 +130,8 @@ function openModalAdvert(elem, favoriteButtonBox) {
     // const favoriteImage = document.createElement('img');
     // const favoriteButtonText = document.createElement('span');
 
+
+    modalContent.className = 'modal-content';
     item.className = 'modal_item_new';
     content.className = 'item_content';
     info.className = 'item_info';
@@ -170,12 +174,14 @@ function openModalAdvert(elem, favoriteButtonBox) {
         modalContent.removeChild(item);
         box.style.display = 'none';
         originalInfo.appendChild(favoriteButtonBox);
+        document.body.style.overflow = 'visible';
     };
     window.onclick = function(event) {
         if(event.target == box) {
             modalContent.removeChild(item);
             box.style.display = 'none';
             originalInfo.appendChild(favoriteButtonBox);
+            document.body.style.overflow = 'visible';
         }
     };
 
@@ -185,6 +191,7 @@ function openModalAdvert(elem, favoriteButtonBox) {
     modalContent.appendChild(item);
 
     box.style.display = "block";
+    document.body.style.overflow = 'hidden';
 }
 
 function openModalFavorite(elem) {
@@ -208,6 +215,9 @@ function openModalFavorite(elem) {
     info.className = 'item_info';
     contentTitle.className = 'content_title';
     contentKeywords.className = "content_keywords";
+    priceFormatted.className = "info_paragraph";
+    priceType.className = "info_paragraph";
+    advertLink.className = "info_link";
 
     roomImage.src = elem.img_url;
 
@@ -219,8 +229,8 @@ function openModalFavorite(elem) {
     content.appendChild(document.createElement('br'));
     content.appendChild(contentDecription);
 
-    priceFormatted.textContent = elem.price_formatted;
-    priceType.textContent = elem.price_type;
+    priceFormatted.textContent = ` Price: ${elem.price_formatted} `;
+    priceType.textContent = " Price type: " + capitalizeFirstLetter( elem.price_type );
     advertLink.href = elem.lister_url;
     advertLink.textContent = "Link";
     info.appendChild(priceFormatted);
@@ -236,15 +246,18 @@ function openModalFavorite(elem) {
     document.getElementById('closer').onclick = () => {
         modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
         box.style.display = 'none';
+        document.body.style.overflow = 'visible';
     };
     window.onclick = function(event) {
         if(event.target == box) {
             modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
             box.style.display = 'none';
+            document.body.style.overflow = 'visible';
         }
     };
 
     box.style.display = "block";
+    document.body.style.overflow = 'hidden';
 }
 
 function addOrRemove(elem) {
@@ -263,6 +276,10 @@ function addOrRemove(elem) {
 
     localStorage.setItem('favoriteData', JSON.stringify(updatedArray));
     console.log(JSON.parse(localStorage.getItem('favoriteData')));
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 srchbtn.addEventListener('click', () => {

@@ -99,7 +99,7 @@ body {
 }
 .content_keywords {
     max-width: 70%;
-    margin-top: 10px 0px;
+    margin-top: 10px;
     color:#545454;
     overflow: hidden;
 }
@@ -109,6 +109,7 @@ body {
     position: relative;
     width: 205px;
     background-color:#f5faff;
+    padding-left: 10px;
 }
 .glyphicon {
     position: relative;
@@ -203,4 +204,18 @@ body {
     position: absolute;
     left: 8%;
     top: 12%;
+}
+.info_paragraph {
+    line-height: 32px;
+}
+.info_link {
+    position: absolute;
+    bottom: 3%;
+    left: 5%;
+}
+.unknown_request {
+    font-size: 24px;
+    font-family: Verdana;
+    margin-top: 20px;
+    text-align: center;
 }
