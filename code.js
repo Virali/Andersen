@@ -4,7 +4,7 @@ const srchbtn = document.getElementById("srchbtn");
 const showmorebtn = document.getElementById("showmorebtn");
 const favorBoxButton = document.getElementsByClassName("favorite_box")[0];
 let index = 0;
-localStorage.setItem('favoriteData', JSON.stringify( [] ));
+if(!JSON.parse(localStorage.getItem('favoriteData'))) localStorage.setItem('favoriteData', JSON.stringify( [] ));
 const favoriteData = JSON.parse(localStorage.getItem('favoriteData'));
 
 function displaySearch(cityname) {
@@ -13,7 +13,7 @@ function displaySearch(cityname) {
 
     getData(cityname)
     .then(dataArr => {
-        if(dataArr == "Unknown location") {
+        if(dataArr === "Unknown location") {
             let content = document.createElement("P");
             let block = document.getElementById("wrap");
     
@@ -25,14 +25,9 @@ function displaySearch(cityname) {
         }
         else {
             console.log(dataArr);
-            // localStorage.setItem('rooms', JSON.stringify(dataArr));
-            // console.log(JSON.parse(localStorage.getItem('rooms')));
             
             displayRow(dataArr);
             document.getElementById("showmorebtn").style.display = "block";
-            // for( let elem of dataarr) {
-            //     displayElem(elem);
-            // }
         }
     });
 }
@@ -86,7 +81,7 @@ function displayElem(elem) {
     content.appendChild(contentKeywords);
 
     
-    if(JSON.parse( localStorage.getItem('favoriteData')).find( (present) =>  present.lister_url == elem.lister_url) != undefined ) {
+    if(JSON.parse( localStorage.getItem('favoriteData')).find( (present) =>  present.lister_url == elem.lister_url)) {
         favoriteButtonText.textContent = "Your Favorite!";
         favoriteImage.src = "https://www.clipartwiki.com/clipimg/detail/64-646573_free-stock-photo-yellow-star-transparent-background.png";
     } else {
@@ -108,7 +103,6 @@ function displayElem(elem) {
     });
 
     info.appendChild(favoriteButtonBox);
-    //info.appendChild(emptystar_image);
 
     item.appendChild(roomImage);
     item.appendChild(content);
@@ -127,8 +121,6 @@ function openModalAdvert(elem, favoriteButtonBox) {
     const contentDecription = document.createElement('span');
     const roomImage = document.createElement('img');
     const info = document.createElement('div');
-    // const favoriteImage = document.createElement('img');
-    // const favoriteButtonText = document.createElement('span');
 
 
     modalContent.className = 'modal-content';
@@ -152,21 +144,6 @@ function openModalAdvert(elem, favoriteButtonBox) {
     content.appendChild(document.createElement('br'));
     content.appendChild(contentDecription);
 
-    // favoriteImage.src = "https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png";
-    // favoriteButtonText.textContent = (JSON.parse( localStorage.getItem('favoriteData')).find( (present) =>  present.lister_url == elem.lister_url) != undefined ) ? "Your Favorite!" : "Add To Favorites";
-    // favoriteButtonBox.appendChild(favoriteImage);
-    // favoriteButtonBox.appendChild(favoriteButtonText);
-    // favoriteButtonBox.addEventListener( 'click', () => {
-    //     addOrRemove(elem);
-    //     if(elem.added) {
-    //         favoriteImage.src = "https://www.clipartwiki.com/clipimg/detail/64-646573_free-stock-photo-yellow-star-transparent-background.png";
-    //         favoriteButtonText.textContent = "Your Favorite!";
-    //     }
-    //     else {
-    //         favoriteImage.src = "https://www.clipartwiki.com/clipimg/detail/239-2393343_tattoo-simple-star-tattoo-design.png";
-    //         favoriteButtonText.textContent = "Add To Favorites";
-    //     }
-    // });
     let originalInfo = favoriteButtonBox.parentNode;
     info.appendChild(favoriteButtonBox);
 
@@ -177,7 +154,7 @@ function openModalAdvert(elem, favoriteButtonBox) {
         document.body.style.overflow = 'visible';
     };
     window.onclick = function(event) {
-        if(event.target == box) {
+        if(event.target === box) {
             modalContent.removeChild(item);
             box.style.display = 'none';
             originalInfo.appendChild(favoriteButtonBox);
@@ -249,7 +226,7 @@ function openModalFavorite(elem) {
         document.body.style.overflow = 'visible';
     };
     window.onclick = function(event) {
-        if(event.target == box) {
+        if(event.target === box) {
             modalContent.innerHTML = "<span class='close' id='closer'>&times;</span>";
             box.style.display = 'none';
             document.body.style.overflow = 'visible';
@@ -264,7 +241,7 @@ function addOrRemove(elem) {
     const arrayInStorage =JSON.parse(localStorage.getItem('favoriteData'));
     let updatedArray;
 
-    if(elem.added != true) {
+    if(!elem.added) {
         elem.added = true;
         arrayInStorage.push(elem);
         updatedArray = arrayInStorage;
