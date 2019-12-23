@@ -10,7 +10,7 @@ class SubmitTab extends React.Component {
         this.state = {
             text: '',
             date: '',
-            itemsList: [],
+            todoList: [{text: "test1", date: '11/11/2019', completed: false, id: 0}, {text: "test2", date: '13/10/2018', completed: false, id: 1}],
         }
     }
 
@@ -57,7 +57,7 @@ class SubmitTab extends React.Component {
 
     handleDelete(id) {
         this.setState( state => {
-            const todoList = state.todoList.map(item => item.id !== id);
+            const todoList = state.todoList.filter( item => item.id !== id);
 
             return {todoList: todoList};
         });
