@@ -5,29 +5,66 @@ class SubmitTab extends React.Component {
     constructor(props) {
         super(props);
         if(!localStorage.getItem('todoItems')) localStorage.setItem('todoItems', JSON.stringify([]));
+        this.onCheckboxChange = this.onCheckboxChange.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.state = {
             text: '',
             date: '',
+            itemsList: [],
         }
+    }
+
+    makeItemsList(items) {
+        if(items == undefined) return;
+        const count = this.makeCounter();
+        const itemsList = items.map( (item) => <TodoItem {...item} onCheckboxChange = {this.onCheckboxChange} handleDelete = {this.handleDelete} key={count()}/> );
+    
+        return itemsList;
+    }
+    
+    makeCounter() {
+        let i = 0;
+    
+        return () => i++;
     }
     
     onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
-    // const parts = e.target.value.split('/');
-    //         this.setState({ 'date': new Date(parts[2],parts[1]-1,parts[0]) })
-
     handleSubmit() {
-        const todoitems = JSON.parse( localStorage.getItem('todoItems') );
-        todoitems.push({
+        const temporaryList = (this.state.todoList) ? [...this.state.todoList] : [];
+
+        temporaryList.push({
             text: this.state.text, 
             date: this.state.date,
             completed: false,
-            id: todoitems.length
+            id: temporaryList.length
         });
-        localStorage.setItem('todoItems', JSON.stringify(todoitems));        
+
+        this.setState(state => {
+            return {todoList: temporaryList}
+        });
+    }
+
+    onCheckboxChange(id) {
+        this.setState( state => {
+            const todoList = state.todoList.map(item => { 
+                if(item.id === id) item.completed = !item.completed 
+            });
+
+            return {todoList: todoList};
+        });
+    }
+
+    handleDelete(id) {
+        this.setState( state => {
+            const todoList = state.todoList.map(item => item.id !== id);
+
+            return {todoList: todoList};
+        });
     }
 
     render() {
+        localStorage.setItem('todoItems', JSON.stringify(this.state.todoList));
         return (
             <div className="submit-tab">
                 <form className="submit-form">
@@ -57,24 +94,10 @@ class SubmitTab extends React.Component {
                         onClick={this.handleSubmit.bind(this)}
                     />
                 </form>
-                <div className="item-list"> {makeItemsList(JSON.parse(localStorage.getItem('todoItems')))} </div>
+                <div className="item-list"> {this.makeItemsList(this.state.todoList)} </div>
             </div>
         );
     }
 }
-
-function makeItemsList(items) {
-    const itemsList = items.map( (item) => <TodoItem {...item} key={count()}/> );
-
-    return itemsList;
-}
-
-function makeCounter() {
-    let i = 0;
-
-    return () => i++;
-}
-
-const count = makeCounter();
 
 export default SubmitTab;
