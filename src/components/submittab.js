@@ -1,5 +1,7 @@
 import React from 'react';
 import TodoItem from './todoitem';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class SubmitTab extends React.Component {
     constructor(props) {
@@ -7,10 +9,11 @@ class SubmitTab extends React.Component {
         if(!localStorage.getItem('todoItems')) localStorage.setItem('todoItems', JSON.stringify([]));
         this.onCheckboxChange = this.onCheckboxChange.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.makeItemsList = this.makeItemsList.bind(this);
         this.state = {
             text: '',
-            date: '',
-            todoList: [{text: "test1", date: '11/11/2019', completed: false, id: 0}, {text: "test2", date: '13/10/2018', completed: false, id: 1}],
+            date: new Date(),
+            todoList: [],
         }
     }
 
@@ -30,7 +33,13 @@ class SubmitTab extends React.Component {
     
     onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
-    handleSubmit() {
+    handleDateChange = date => {
+        this.setState({
+            date: date
+        });
+    };
+
+    handleSubmit(e) {
         const temporaryList = (this.state.todoList) ? [...this.state.todoList] : [];
 
         temporaryList.push({
@@ -43,12 +52,16 @@ class SubmitTab extends React.Component {
         this.setState(state => {
             return {todoList: temporaryList}
         });
+        e.preventDefault();
     }
 
     onCheckboxChange(id) {
         this.setState( state => {
             const todoList = state.todoList.map(item => { 
-                if(item.id === id) item.completed = !item.completed 
+                if(item.id === id) {
+                    item.completed = !item.completed;
+                }
+                return item;
             });
 
             return {todoList: todoList};
@@ -76,8 +89,7 @@ class SubmitTab extends React.Component {
                         value={this.state.text}
                         onChange={this.onChange}
                     />
-
-                    <input
+                    {/* <input
                         className='input-title'
                         style={{width: '16%', flex: 'none'}}
                         type="text"
@@ -85,8 +97,12 @@ class SubmitTab extends React.Component {
                         placeholder="dd/mm/yyyy"
                         value={this.state.date}
                         onChange={this.onChange}
+                    /> */}
+                    <DatePicker
+                        className='date-title'
+                        selected={this.state.date}
+                        onChange={this.handleDateChange}
                     />
-
                     <input 
                         type="submit" 
                         className="btn" 

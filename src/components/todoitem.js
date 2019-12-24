@@ -36,6 +36,7 @@ class TodoItem extends React.Component {
             fontSize: '21px',
             lineHeight: '14px',
             textDecoration: this.props.completed ? 'line-through' : 'none',
+            color: 'grey',
         }
     }
 
@@ -44,7 +45,7 @@ class TodoItem extends React.Component {
             <div className="todo-item">:
                 <input type="checkbox" checked={this.props.completed} onChange={this.handleChange}/>
                 <p style={this.getStyle()}> {this.props.text} </p>
-                <p style={{ position: 'absolute', right : '12%'}}> {this.getDate(this.props.date)} </p>
+                <p style={{ position: 'absolute', right : '12%'}}> {this.props.date.toDateString()} </p>
                 <button className="delete-btn" onClick={this.handleDelete}>Delete</button>
             </div>
         );

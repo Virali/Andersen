@@ -61,6 +61,19 @@ body {
     font-size: 132%;
     margin-right: 10px;
 }
+.date-title {
+    flex: 10 1 0%;
+    padding: 5px;
+    background-color:transparent;
+    border: 0.1rem solid#d1d1d1;
+    border-radius: .4rem;
+    box-shadow: none;
+    box-sizing: inherit;
+    height: 2.4rem;
+    padding: .6rem 1.0rem;
+    font-size: 100%;
+    margin-right: 10px;
+}
 .btn {
     flex: 1 1 0%;
     background-color:#9b4dca;
@@ -107,4 +120,8 @@ body {
     position: absolute;
     right: 4%;
     padding: 14px 7px;
+}
+.delete-btn:hover {
+    background-color:#555;
+    border-color: #555;
 }
