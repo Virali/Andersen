@@ -6,44 +6,68 @@ import "react-datepicker/dist/react-datepicker.css";
 class FindTab extends React.Component {
     constructor(props) {
         super(props);
+        this.makeList = this.makeList.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.state = {
             text: '',
             date: new Date(),
+            order: 'earliest',
+            filteredList: this.props.todoList,
         }
     }
-    onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+    
+    makeCounter() {
+        let i = 0;
+    
+        return () => i++;
+    }
 
-    handleDateChange = date => {
-        this.setState({
-            date: date
-        });
-    };
+    makeList(items) {
+        if(items == undefined) return;
+        const count = this.makeCounter();
+        const itemsList = items.map( (item) => <TodoItem {...item} onCheckboxChange = {this.props.onCheckboxChange} handleDelete = {this.props.handleDelete} key={count()}/> );
+    
+        return itemsList;
+    }
+    
+    onChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+
+        
+    }
+
+    match(text, date) {
+        
+    }
 
     render() {
         return (
             <div className="submit-tab">
                 <form className="submit-form">
-                    <input 
+                    <input
                         className="input-title" 
-                        type="text" 
+                        type="text"
                         name="text" 
-                        placeholder="Find your todo..." 
+                        placeholder="Add Todo..." 
                         value={this.state.text}
                         onChange={this.onChange}
                     />
                     <DatePicker
+                        id='date'
                         className='date-title'
                         selected={this.state.date}
-                        onChange={this.handleDateChange}
+                        onChange={this.onChange}
                     />
-                    <input 
+                    <input
+                        id='launcher' 
                         type="button" 
                         className="btn"
-                        value="Find"
+                        style={{ 'backgroundColor': '#ffbf00', 'border': '0.1rem solid #d0a707', 'padding': '0.1rem'}}
+                        value={this.state.order}
                         onClick={console.log('clicked')}
                     />
                 </form>
-                <div className="item-list"> {this.makeItemsList(this.state.todoList)} </div>
+                <div className="item-list"> {this.makeList(this.props.todoList)} </div>
             </div>
         );
     }

@@ -6,29 +6,26 @@ import "react-datepicker/dist/react-datepicker.css";
 class SubmitTab extends React.Component {
     constructor(props) {
         super(props);
-        if(!localStorage.getItem('todoItems')) localStorage.setItem('todoItems', JSON.stringify([]));
-        this.onCheckboxChange = this.onCheckboxChange.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.makeItemsList = this.makeItemsList.bind(this);
+        this.makeList = this.makeList.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.state = {
             text: '',
             date: new Date(),
-            todoList: [],
         }
-    }
-
-    makeItemsList(items) {
-        if(items == undefined) return;
-        const count = this.makeCounter();
-        const itemsList = items.map( (item) => <TodoItem {...item} onCheckboxChange = {this.onCheckboxChange} handleDelete = {this.handleDelete} key={count()}/> );
-    
-        return itemsList;
     }
     
     makeCounter() {
         let i = 0;
     
         return () => i++;
+    }
+
+    makeList(items) {
+        if(items == undefined) return;
+        const count = this.makeCounter();
+        const itemsList = items.map( (item) => <TodoItem {...item} onCheckboxChange = {this.props.onCheckboxChange} handleDelete = {this.props.handleDelete} key={count()}/> );
+    
+        return itemsList;
     }
     
     onChange = (e) => this.setState({ [e.target.name]: e.target.value });
@@ -39,78 +36,45 @@ class SubmitTab extends React.Component {
         });
     };
 
-    handleSubmit(e) {
-        const temporaryList = (this.state.todoList) ? [...this.state.todoList] : [];
-
-        temporaryList.push({
+    handleSubmitItem(e) {
+        const item = {
             text: this.state.text, 
             date: this.state.date,
             completed: false,
-            id: temporaryList.length
-        });
+            id: this.props.todoList.length
+        };
 
-        this.setState(state => {
-            return {todoList: temporaryList}
-        });
+        this.props.handleSubmit(item);
         e.preventDefault();
     }
 
-    onCheckboxChange(id) {
-        this.setState( state => {
-            const todoList = state.todoList.map(item => { 
-                if(item.id === id) {
-                    item.completed = !item.completed;
-                }
-                return item;
-            });
-
-            return {todoList: todoList};
-        });
-    }
-
-    handleDelete(id) {
-        this.setState( state => {
-            const todoList = state.todoList.filter( item => item.id !== id);
-
-            return {todoList: todoList};
-        });
-    }
-
     render() {
-        localStorage.setItem('todoItems', JSON.stringify(this.state.todoList));
         return (
             <div className="submit-tab">
                 <form className="submit-form">
-                    <input 
+                    <input
                         className="input-title" 
-                        type="text" 
+                        type="text"
                         name="text" 
                         placeholder="Add Todo..." 
                         value={this.state.text}
                         onChange={this.onChange}
                     />
-                    {/* <input
-                        className='input-title'
-                        style={{width: '16%', flex: 'none'}}
-                        type="text"
-                        name="date"
-                        placeholder="dd/mm/yyyy"
-                        value={this.state.date}
-                        onChange={this.onChange}
-                    /> */}
                     <DatePicker
+                        id='date'
                         className='date-title'
                         selected={this.state.date}
-                        onChange={this.handleDateChange}
+                        onChange={this.onChange}
                     />
-                    <input 
+                    <input
+                        id='launcher' 
                         type="submit" 
                         className="btn" 
                         value="Submit"
-                        onClick={this.handleSubmit.bind(this)}
+                        onClick={this.handleSubmitItem.bind(this)}
                     />
                 </form>
-                <div className="item-list"> {this.makeItemsList(this.state.todoList)} </div>
+                <div className="item-list"> {this.makeList(this.props.todoList)} </div>
             </div>
         );
     }

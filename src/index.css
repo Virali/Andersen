@@ -30,6 +30,7 @@ body {
 .main-header i:hover {
     text-decoration: underline;
     color: rgb(209, 209, 16);
+    cursor: pointer;
 }
 .storage-box {
     margin: 0 auto;
