@@ -21,7 +21,8 @@ class TodoItem extends React.Component {
             marginLeft: '20px',
             fontSize: '21px',
             lineHeight: '14px',
-            textDecoration: this.props.completed ? 'line-through' : 'none',
+            textDecoration: this.props.completed ? 'line-through black 2px' : 'none',
+            textDecorationColor: 'black',
             color: 'grey',
         }
     }

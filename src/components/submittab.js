@@ -10,7 +10,9 @@ class SubmitTab extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.state = {
             text: '',
-            date: new Date(),
+            date: null,
+            emptyText: false,
+            emptyDate: false,
         }
     }
     
@@ -44,6 +46,13 @@ class SubmitTab extends React.Component {
             id: this.props.todoList.length
         };
 
+        if(item.text == '' || item.date == '' || item.date == null) {
+            if(item.text == '') this.setState({ emptyText: true });
+            if(item.date == '' || item.date == null) this.setState({ emptyDate: true });
+            e.preventDefault();
+            return;  
+        }
+
         this.props.handleSubmit(item);
         e.preventDefault();
     }
@@ -59,12 +68,14 @@ class SubmitTab extends React.Component {
                         placeholder="Add Todo..." 
                         value={this.state.text}
                         onChange={this.onChange}
+                        style={(this.state.emptyText) ? {border: 'solid #ff8989', backgroundColor: '#ffe1e1',} : {}}
                     />
                     <DatePicker
                         id='date'
                         className='date-title'
                         selected={this.state.date}
-                        onChange={this.onChange}
+                        onChange={this.handleDateChange}
+                        style={(this.state.emptyDate) ? {border: 'solid #ff8989', backgroundColor: '#ffe1e1',} : {}}
                     />
                     <input
                         id='launcher' 
