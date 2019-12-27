@@ -9,7 +9,7 @@ import FindTab from './components/findTab';
 class App extends React.Component {
     constructor(props) {
         super(props);
-        if(!localStorage.getItem('todoList')) localStorage.setItem('todoList', JSON.stringify([]));
+        if(localStorage.getItem('todoList') == false) localStorage.setItem('todoList', '[{"text":"aaaaa","date":"2019-12-26T21:00:00.000Z","completed":false,"id":0},{"text":"aaaaa","date":"2019-12-26T21:00:00.000Z","completed":false,"id":1},{"text":"aaaaa","date":"2019-12-27T21:00:00.000Z","completed":false,"id":2},{"text":"aaaaa","date":"2019-12-28T21:00:00.000Z","completed":false,"id":3},{"text":"bbbbb","date":"2019-12-26T21:00:00.000Z","completed":false,"id":4},{"text":"ccccc","date":"2019-12-26T21:00:00.000Z","completed":false,"id":5},{"text":"aabbcc","date":"2019-12-29T21:00:00.000Z","completed":false,"id":6},{"text":"aabbcc","date":"2019-12-26T21:00:00.000Z","completed":false,"id":7}]');
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.onCheckboxChange = this.onCheckboxChange.bind(this);
