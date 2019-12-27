@@ -13,6 +13,7 @@ class SubmitTab extends React.Component {
             date: null,
             emptyText: false,
             emptyDate: false,
+            count: this.makeCounter(),
         }
     }
     
@@ -30,11 +31,15 @@ class SubmitTab extends React.Component {
         return itemsList;
     }
     
-    onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+    onChange = (e) => this.setState({ 
+        [e.target.name]: e.target.value,
+        emptyText: (e.target.value) ? false : true,
+    });
 
     handleDateChange = date => {
         this.setState({
-            date: date
+            date: date,
+            emptyDate: (date) ? false : true,
         });
     };
 
@@ -43,7 +48,7 @@ class SubmitTab extends React.Component {
             text: this.state.text, 
             date: this.state.date,
             completed: false,
-            id: this.props.todoList.length
+            id: this.state.count(),
         };
 
         if(item.text == '' || item.date == '' || item.date == null) {
@@ -62,20 +67,18 @@ class SubmitTab extends React.Component {
             <div className="submit-tab">
                 <form className="submit-form">
                     <input
-                        className="input-title" 
+                        className={(this.state.emptyText) ? 'input-title-empty' : 'input-title'} 
                         type="text"
                         name="text" 
                         placeholder="Add Todo..." 
                         value={this.state.text}
                         onChange={this.onChange}
-                        style={(this.state.emptyText) ? {border: 'solid #ff8989', backgroundColor: '#ffe1e1',} : {}}
                     />
                     <DatePicker
                         id='date'
-                        className='date-title'
+                        className={(this.state.emptyDate) ? 'date-title-empty' : 'date-title'}
                         selected={this.state.date}
                         onChange={this.handleDateChange}
-                        style={(this.state.emptyDate) ? {border: 'solid #ff8989', backgroundColor: '#ffe1e1',} : {}}
                     />
                     <input
                         id='launcher' 

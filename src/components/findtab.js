@@ -21,10 +21,11 @@ class FindTab extends React.Component {
         return () => i++;
     }
 
-    makeList(items) {
-        if(items == undefined) return;
+    makeList(originalItems) {
+        if(originalItems == undefined) return;
+        const items = [...originalItems];
 
-        if(this.state.ascendingOrder != true) items.sort( (a,b) => {return a.date - b.date} );
+        if(this.state.ascendingOrder === true) items.sort( (a,b) => {return a.date - b.date} );
         else items.sort( (a,b) => {return b.date - a.date} );
 
         const count = this.makeCounter();
@@ -40,10 +41,10 @@ class FindTab extends React.Component {
             return (date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate());
         }
 
-        if(searchText != '' && searchDate != null) {
+        if(searchText !== '' && searchDate !== null) {
             filteredItems = items.filter(item => item.text.includes(searchText) && compareDates(item.date, searchDate));
         } else {
-            if(searchText != '') {
+            if(searchText !== '') {
                 filteredItems = items.filter(item => item.text.includes(searchText));
             } else if(searchDate != null) {
                 filteredItems = items.filter(item => compareDates(item.date, searchDate));

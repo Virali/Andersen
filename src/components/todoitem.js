@@ -32,7 +32,7 @@ class TodoItem extends React.Component {
             <div className="todo-item">
                 <input type="checkbox" checked={this.props.completed} onChange={this.handleChange}/>
                 <p style={this.getStyle()}> {this.props.text} </p>
-                <p style={{ position: 'absolute', right : '12%'}}> {this.props.date.toDateString()} </p>
+                <p style={{ position: 'absolute', right : '12%'}}> {(this.props.date).toDateString()} </p>
                 <button className="delete-btn" onClick={this.handleDelete}>Delete</button>
             </div>
         );

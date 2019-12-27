@@ -9,12 +9,16 @@ import FindTab from './components/findTab';
 class App extends React.Component {
     constructor(props) {
         super(props);
+        if(!localStorage.getItem('todoList')) localStorage.setItem('todoList', JSON.stringify([]));
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.onCheckboxChange = this.onCheckboxChange.bind(this);
         this.state = {
             flag: '',
-            todoList: [],
+            todoList: JSON.parse(localStorage.getItem('todoList')).map(item => {
+                item.date = new Date(item.date);
+                return item; 
+            }),
         }
     }
 
@@ -26,6 +30,7 @@ class App extends React.Component {
         const temporaryList = this.state.todoList;
 
         temporaryList.push(item);
+        localStorage.setItem('todoList', JSON.stringify(temporaryList));
 
         this.setState(state => {
             return {todoList: temporaryList}
@@ -36,6 +41,7 @@ class App extends React.Component {
         this.setState( state => {
             const todoList = state.todoList.filter( item => item.id !== id);
 
+            localStorage.setItem('todoList', JSON.stringify(todoList));
             return {todoList: todoList};
         });
     }
