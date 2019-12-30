@@ -18,5 +18,11 @@ class Counter extends Component {
       );
    }
 }
-Counter = connect()(Counter);
-export default Counter;
+
+const mapStateToProps = state => {
+	return {
+	  value: state,
+	}
+ }
+
+export default connect(mapStateToProps)(Counter);
